@@ -1,3 +1,9 @@
+/**
+ * Project-Compile-On-The-Fly-UI
+ * TextAreaOutputStream.java
+ * 
+ * Subclass of OutputStream that writes to Main.window's output text
+ */
 package pkgRunInputCodeUI;
 
 import java.io.IOException;
