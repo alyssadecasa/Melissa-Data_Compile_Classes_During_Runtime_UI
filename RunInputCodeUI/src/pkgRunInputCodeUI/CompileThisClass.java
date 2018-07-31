@@ -14,10 +14,6 @@ public class CompileThisClass {
 	private PrintStream print;
 
 	public CompileThisClass() {
-		//print = new PrintStream(new TextAreaOutputStream());
-		//System.setOut(print);
-		//System.setErr(print);
-
 	}
 
 	public static void main(String[] args) {
