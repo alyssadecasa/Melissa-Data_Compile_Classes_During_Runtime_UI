@@ -29,7 +29,7 @@ public class DynamicURLClassLoader extends URLClassLoader {
 			return super.loadClass(name);
 
 		try {
-			String url = "file:C:\\Users\\alyssa\\eclipse-workspace\\RunInputCodeUI\\bin\\pkgRunInputCodeUI\\CompileThisClass.class";
+			String url = "file:H:\\git\\CompileOnTheFlyUI\\RunInputCodeUI\\bin\\pkgRunInputCodeUI\\CompileThisClass.class"; // "file:C:\\Users\\alyssa\\eclipse-workspace\\RunInputCodeUI\\bin\\pkgRunInputCodeUI\\CompileThisClass.class";
 			URL myUrl = new URL(url);
 			URLConnection connection = myUrl.openConnection();
 			InputStream input = connection.getInputStream();

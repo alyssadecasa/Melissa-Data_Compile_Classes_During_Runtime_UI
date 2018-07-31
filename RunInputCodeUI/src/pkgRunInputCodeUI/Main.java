@@ -20,7 +20,6 @@ public class Main {
 	private static CompilableClass compilable;
 	private static PrintStream print;
 	private static final String PLACEHOLDER = "/* PLACEHOLDER */";
-	private static int count = 0;
 
 	public static void main(String[] args) {
 		window = new GuiWindow();

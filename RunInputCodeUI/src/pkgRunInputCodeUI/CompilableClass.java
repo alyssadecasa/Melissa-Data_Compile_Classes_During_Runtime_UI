@@ -71,8 +71,16 @@ public class CompilableClass {
 	 * @param pathname
 	 *            FULL pathname of desired file
 	 */
-	public void setSourceClass(String pathname) {
+	public void setSourceFile(String pathname) {
 		javaFile = new File(pathname);
+	}
+	
+	public void setDestinationFile(String pathname) {
+		classFile = new File(pathname);
+	}
+	
+	public void setRootDirectory(String pathname) {
+		root = new File(pathname);
 	}
 
 	/**
