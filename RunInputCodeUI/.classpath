@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<classpath>
+	<classpathentry exported="true" kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
+	<classpathentry kind="src" path="src"/>
+	<classpathentry kind="lib" path="JARs/commons-io-2.6.jar"/>
+	<classpathentry kind="lib" path="JARs/org.eclipse.swt.win32.win32.x86_64_3.106.3.v20180329-0507.jar"/>
+	<classpathentry kind="lib" path="JARs/swing2swt.jar"/>
+	<classpathentry kind="lib" path="JARs/jgoodies-common-1.1.1.jar"/>
+	<classpathentry kind="lib" path="JARs/jgoodies-common-1.4.0.jar"/>
+	<classpathentry kind="lib" path="JARs/jgoodies-forms-1.8.0-sources.jar"/>
+	<classpathentry kind="lib" path="JARs/jgoodies-forms-1.8.0.jar"/>
+	<classpathentry kind="output" path="bin"/>
+</classpath>
