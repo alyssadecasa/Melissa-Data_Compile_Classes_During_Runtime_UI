@@ -1,17 +1,17 @@
 /**
- * Project RunInputCodeUI
+ * Project Compile-On-The-Fly-UI
  * CompileThisClass.java
  * 
- * Sample code to have new code be inserted into it and be compiled (at runtime ?)
+ * Sample code to have new code be inserted into it and be compiled at runtime
+ * 
+ * @author alyssa
  */
 
 package pkgRunInputCodeUI;
 
-import java.io.PrintStream;
 
 public class CompileThisClass {
 	public int sum;
-	private PrintStream print;
 
 	public CompileThisClass() {
 	}

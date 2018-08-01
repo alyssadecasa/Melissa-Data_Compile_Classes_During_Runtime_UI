@@ -1,8 +1,10 @@
 /**
- * Project-Compile-On-The-Fly-UI
+ * Project Compile-On-The-Fly-UI
  * TextAreaOutputStream.java
  * 
  * Subclass of OutputStream that writes to Main.window's output text
+ * 
+ * @author alyssa
  */
 package pkgRunInputCodeUI;
 

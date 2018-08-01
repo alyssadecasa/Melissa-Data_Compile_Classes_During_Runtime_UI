@@ -1,8 +1,10 @@
 /**
- * Project RunInputCodeUI
+ * Project Compile-On-The-Fly-UI
  * GuiWindow.java
  * 
  * Class for handling all GUI related elements
+ * 
+ * @author alyssa
  */
 
 package pkgRunInputCodeUI;
@@ -23,9 +25,6 @@ import java.awt.GridBagConstraints;
 import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.io.FileNotFoundException;
-import java.io.IOException;
-import java.awt.Color;
 import java.awt.SystemColor;
 
 public class GuiWindow {
@@ -33,10 +32,7 @@ public class GuiWindow {
 	private JFrame frame;
 	private JTextArea inputText;
 	private JTextArea outputText;
-	private String outputString;
-	private boolean buttonPressed;
 
-	
 	public GuiWindow() {
 		frame = new JFrame();
 		frame.setBounds(100, 100, 1000, 600);
@@ -59,7 +55,7 @@ public class GuiWindow {
 
 		JPanel southStaticPanel = new JPanel();
 		frame.getContentPane().add(southStaticPanel, BorderLayout.SOUTH);
-		
+
 		JButton southRestoreDefaultButton = new JButton("Restore to Default");
 		addButtonListener(southRestoreDefaultButton);
 		southStaticPanel.add(southRestoreDefaultButton);
@@ -67,7 +63,6 @@ public class GuiWindow {
 		JButton southSubmitButton = new JButton("Submit and Compile");
 		addButtonListener(southSubmitButton);
 		southStaticPanel.add(southSubmitButton);
-		
 
 		JPanel centerDynamicPanel = new JPanel();
 		frame.getContentPane().add(centerDynamicPanel, BorderLayout.CENTER);
@@ -97,7 +92,7 @@ public class GuiWindow {
 		inputText = new JTextArea();
 		inputText.setWrapStyleWord(true);
 		inputText.setLineWrap(true);
-		JScrollPane inputScroll = new JScrollPane (inputText);
+		JScrollPane inputScroll = new JScrollPane(inputText);
 		inputScroll.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED);
 		GridBagConstraints gbc_inputText = new GridBagConstraints();
 		gbc_inputText.insets = new Insets(0, 0, 5, 5);
@@ -111,7 +106,7 @@ public class GuiWindow {
 		outputText.setEditable(false);
 		outputText.setWrapStyleWord(true);
 		outputText.setLineWrap(true);
-		JScrollPane outputScroll = new JScrollPane (outputText);
+		JScrollPane outputScroll = new JScrollPane(outputText);
 		outputScroll.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED);
 		GridBagConstraints gbc_outputText = new GridBagConstraints();
 		gbc_outputText.insets = new Insets(0, 0, 5, 5);
@@ -128,7 +123,7 @@ public class GuiWindow {
 		centerDynamicPanel.add(horizontalStrut, gbc_horizontalStrut);
 
 	}
-	
+
 	private void addButtonListener(JButton button) {
 		button.addActionListener(new ActionListener() {
 			@Override
@@ -141,29 +136,29 @@ public class GuiWindow {
 			}
 		});
 	}
-	
-	public boolean isOpen() {
-		if (frame.isShowing()) {
-			return true;
-		}
-		return false;
-	}
-	
-	public void setButtonPressed(boolean bool) {
-		buttonPressed = bool;
-	}
-	
-	public boolean buttonIsPressed() {
-		return buttonPressed;
-	}
-	
+
+	/**
+	 * Returns the text contained in the inputText text area
+	 * 
+	 * @return the text
+	 */
 	public String getUserCode() {
 		return inputText.getText();
 	}
-	
+
+	/**
+	 * Sets the outputText text area empty
+	 */
 	public void clearOutputText() {
 		outputText.setText("");
 	}
+
+	/**
+	 * Appends the outputText text area with the given string
+	 * 
+	 * @param string
+	 *            to be appended
+	 */
 	public void appendOutputText(String string) {
 		outputText.append(string);
 	}

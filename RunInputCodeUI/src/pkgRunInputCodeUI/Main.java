@@ -1,8 +1,10 @@
 /**
- * Project RunInputCodeUI
+ * Project Compile-On-The-Fly-UI
  * Main.java
  * 
  * Main code to test features and functionality of project with GUI
+ * 
+ * @author alyssa
  */
 
 package pkgRunInputCodeUI;
@@ -31,7 +33,6 @@ public class Main {
 
 	public static void submitButtonPressed() {
 		window.clearOutputText();
-		System.out.println("Modified class compiled and loaded.\n---");
 		boolean noExceptionThrown = true;
 		
 		compilable.setInputCode(window.getUserCode());
@@ -56,7 +57,7 @@ public class Main {
 		}
 
 		try {
-			compilable.compileSourceClass();
+			compilable.compileClass();
 		} catch (IOException e) {
 			System.out.println("Error trying to compile code: Invalid file destination.");
 			noExceptionThrown = false;
@@ -64,38 +65,42 @@ public class Main {
 		}
 
 		if (noExceptionThrown) {
-			loadClass();
+			loadClass("Modified class compiled and loaded.\n---");
 		}
 		
 	}
 	
 	public static void restoreButtonPressed() {
 		window.clearOutputText();
-		System.out.println("Defaults restored.\n---");
 		boolean noExceptionThrown = true;
 
 		compilable.setInputCode(PLACEHOLDER);
 		try {
 			compilable.updateSourceClass(compilable.getLastInputCode());
 		} catch (FileNotFoundException e) {
-			System.out.println("Error trying to update source code: " 
+			System.out.println("Error trying to restore source code to defaults: " 
 					+ "source code file not found.");
 			noExceptionThrown = false;
 			e.printStackTrace();
 		} catch (IOException e) {
-			System.out.println("Error trying to update source code: "
+			System.out.println("Error trying to restore source code to defaults: "
 					+ "source code file incorrectly formatted.");
 			noExceptionThrown = false;
 			e.printStackTrace();
 		} catch (PlaceholderStringNotFoundException e) {
-			System.out.println("Error trying to update source code: " 
+			System.out.println("Error trying to restore source code to defaults: " 
 					+ "placeholder string not found in source code file.");
+			noExceptionThrown = false;
+			e.printStackTrace();
+		} catch (UnretrievableInputCodeException e) {
+			System.out.println("Error trying to restore source code to defaults: " 
+					+ "cannot restore defaults before compiling at least once.");
 			noExceptionThrown = false;
 			e.printStackTrace();
 		}
 
 		try {
-			compilable.compileSourceClass();
+			compilable.compileClass();
 		} catch (IOException e) {
 			System.out.println("Error trying to compile code: Invalid file destination.");
 			noExceptionThrown = false;
@@ -103,21 +108,19 @@ public class Main {
 		}
 
 		if (noExceptionThrown) {
-			loadClass();
+			loadClass("Defaults restored.\n---");
 		}
 		
 	}
 	
-	public static void loadClass() {
+	public static void loadClass(String successMessage) {
 		Class<?> compileThisClass = null;
 		try {
-			compileThisClass = compilable.loadSourceClass();
+			compileThisClass = compilable.loadClass("file:H:\\git\\Compile-On-The-Fly-UI\\RunInputCodeUI\\bin\\pkgRunInputCodeUI\\CompileThisClass.class");
 
 		} catch (ClassNotFoundException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		} catch (MalformedURLException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		
@@ -125,15 +128,15 @@ public class Main {
 		try {
 			m = compileThisClass.getMethod("main", String[].class);
 		} catch (NoSuchMethodException | SecurityException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 
 		try {
+			System.out.println(successMessage);
+			
 			String[] params = null;
 				m.invoke(null, (Object) params);
 		} catch (IllegalAccessException | IllegalArgumentException | InvocationTargetException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 

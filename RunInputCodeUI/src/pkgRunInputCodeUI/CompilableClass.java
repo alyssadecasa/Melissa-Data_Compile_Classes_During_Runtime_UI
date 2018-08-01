@@ -4,6 +4,8 @@
  * 
  * Class that allows for users to load a class at runtime without 
  * needing to restart the current program
+ * 
+ * @author alyssa
  */
 
 package pkgRunInputCodeUI;
@@ -11,10 +13,8 @@ package pkgRunInputCodeUI;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.lang.reflect.Method;
 import java.net.MalformedURLException;
 import java.net.URL;
-import java.net.URLClassLoader;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.StandardCopyOption;
@@ -48,7 +48,7 @@ public class CompilableClass {
 
 	// Public Methods
 	// ------------------------------------------------------------------------------------------
-	
+
 	/**
 	 * Sets the string containing code to be inserted into the source java file
 	 * 
@@ -62,11 +62,20 @@ public class CompilableClass {
 		this.inputCodeString = inputCodeString;
 	}
 
-	public String getLastInputCode() {
+	/**
+	 * Returns the last code string inputted by the user
+	 * 
+	 * @return last code string inputted by the user
+	 */
+	public String getLastInputCode() throws UnretrievableInputCodeException {
+		if (lastInputCodeString == null) {
+			throw new UnretrievableInputCodeException("No input code previously entered");
+		}
 		return lastInputCodeString;
 	}
+
 	/**
-	 * Sets the Source Class from a string containing the FULL pathname
+	 * Sets the Java Source Class file from a string containing the FULL pathname
 	 * 
 	 * @param pathname
 	 *            FULL pathname of desired file
@@ -74,11 +83,23 @@ public class CompilableClass {
 	public void setSourceFile(String pathname) {
 		javaFile = new File(pathname);
 	}
-	
+
+	/**
+	 * Sets the Destination Class file from a string containing the FULL pathname
+	 * 
+	 * @param pathname
+	 *            FULL pathname of desired file
+	 */
 	public void setDestinationFile(String pathname) {
 		classFile = new File(pathname);
 	}
-	
+
+	/**
+	 * Sets the root directory from a string containing the FULL pathname
+	 * 
+	 * @param pathname
+	 *            FULL pathname of desired directory
+	 */
 	public void setRootDirectory(String pathname) {
 		root = new File(pathname);
 	}
@@ -98,7 +119,7 @@ public class CompilableClass {
 			throws FileNotFoundException, IOException, PlaceholderStringNotFoundException {
 		String fileAsString = "";
 
-		fileAsString = fileToString(new File(root.toString() + "\\src\\pkgRunInputCodeUI\\CompileThisClass.java"));
+		fileAsString = fileToString(javaFile);
 
 		// Ensure placeholder exists
 		if (!fileAsString.contains(placeholder)) {
@@ -114,7 +135,7 @@ public class CompilableClass {
 	 * 
 	 * @throws IOException
 	 */
-	public void compileSourceClass() throws IOException {
+	public void compileClass() throws IOException {
 		JavaCompiler compiler = ToolProvider.getSystemJavaCompiler();
 		compiler.run(null, null, null, javaFile.getPath());
 
@@ -126,20 +147,36 @@ public class CompilableClass {
 			}
 		} catch (IOException e) {
 			throw new IOException(
-					"Unable to move newly compiled class file from source " 
-							+ "folder to specified class location.");
+					"Unable to move newly compiled class file from source folder to specified class location.");
 		}
 	}
 
-	public Class<?> loadSourceClass() throws ClassNotFoundException, MalformedURLException {
+	/**
+	 * Loads the class file at the given url
+	 * 
+	 * @param url
+	 *            file location of class to be loaded
+	 * @return Class object of specified loaded class
+	 * @throws ClassNotFoundException
+	 * @throws MalformedURLException
+	 */
+	public Class<?> loadClass(String url) throws ClassNotFoundException, MalformedURLException {
 		File bin = classFile.getParentFile().getParentFile();
-		URLClassLoader classLoader = null;
+
+		if (!url.startsWith("file:" + bin)) {
+			throw new MalformedURLException("class location url is not contained in parent destination file:"
+					+ "\n\turl: " + url + "\n\tparent destination file: " + bin);
+		}
+
 		DynamicURLClassLoader dynamicLoader = null;
 		Class<?> cls = null;
 		String className = classFile.getParentFile().getName() + "."
 				+ classFile.getName().substring(0, classFile.getName().length() - 6);
-		classLoader = URLClassLoader.newInstance(new URL[] { bin.toURI().toURL() });
+
 		dynamicLoader = new DynamicURLClassLoader(new URL[] { bin.toURI().toURL() });
+		dynamicLoader.setDynamicClassUrl(url);
+		dynamicLoader.setDynamicClassName(className);
+
 		cls = Class.forName(className, true, dynamicLoader);
 
 		return cls;
@@ -147,16 +184,6 @@ public class CompilableClass {
 
 	// Private Helper Methods
 	// ------------------------------------------------------------------------------------------
-	
-	/**
-	 * Converts a File to a String
-	 * 
-	 * @param sourceFile
-	 *            File to be converted into a String
-	 * @return fileAsString inputted File formatted as a String
-	 * @throws FileNotFoundException
-	 * @throws IOException
-	 */
 	private String fileToString(File sourceFile) throws FileNotFoundException, IOException {
 		String fileAsString = "";
 
@@ -170,28 +197,12 @@ public class CompilableClass {
 		return fileAsString;
 	}
 
-	/**
-	 * Converts a String to a File
-	 * 
-	 * @param sourceString
-	 *            String to be converted into a File
-	 * @param destinationFile
-	 *            name of newly created File
-	 * @throws IOException
-	 */
 	private void stringToFile(String sourceString, File destinationFile) throws IOException {
 		FileUtils.writeStringToFile(destinationFile, sourceString, "UTF-8");
 	}
 
-	/**
-	 * Moves a file from the source location to the destination location
-	 * @param sourceFile source path
-	 * @param destinationFile destination path
-	 * @throws IOException
-	 */
 	private void moveFile(Path sourceFile, Path destinationFile) throws IOException {
 		Files.move(sourceFile, destinationFile, StandardCopyOption.REPLACE_EXISTING);
-
 	}
 
 }
