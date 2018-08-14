@@ -122,11 +122,15 @@ public class CompilableClass {
 		fileAsString = fileToString(javaFile);
 
 		// Ensure placeholder exists
-		if (!fileAsString.contains(placeholder)) {
+		System.out.println(placeholder);
+		if (!fileAsString
+				.contains("/* start */\r\n" + "		" + placeholder + "\r\n" + "		/* end */\r\n" + "")) {
 			throw new PlaceholderStringNotFoundException("Placeholder string not found in source file.");
 		}
 
-		fileAsString = fileAsString.replace(placeholder, inputCodeString);
+		fileAsString = fileAsString.replace(
+				"/* start */\r\n" + "		" + placeholder + "\r\n" + "		/* end */\r\n" + "",
+				"/* start */\r\n" + "		" + inputCodeString + "\r\n" + "		/* end */\r\n" + "");
 		stringToFile(fileAsString, javaFile);
 	}
 

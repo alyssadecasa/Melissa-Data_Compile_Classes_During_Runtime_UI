@@ -24,6 +24,8 @@ public class CompileThisClass {
 	public void doThing() {
 		sum = 1 + 1;
 		System.out.println(sum);
+		/* start */
 		/* PLACEHOLDER */
+		/* end */
 	}
 }
