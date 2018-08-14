@@ -174,6 +174,7 @@ public class CompilableClass {
 
 		DynamicURLClassLoader dynamicLoader = null;
 		Class<?> cls = null;
+		
 		String className = classFile.getParentFile().getName() + "."
 				+ classFile.getName().substring(0, classFile.getName().length() - 6);
 

@@ -9,7 +9,6 @@
 
 package pkgRunInputCodeUI;
 
-
 public class CompileThisClass {
 	public int sum;
 
